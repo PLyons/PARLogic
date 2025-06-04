@@ -1,0 +1,7 @@
+item_id,item_name,quantity,date,unit_price,category,supplier,department,location,min_stock,max_stock
+SUP001,N95 Masks,1000,2024-03-01,2.50,PPE,3M Healthcare,Emergency,Main Storage,500,2000
+SUP002,Surgical Gloves,500,2024-03-01,0.75,Medical Supplies,Cardinal Health,Surgery,OR Storage,200,1000
+SUP003,IV Solution,250,2024-03-01,-5,Medical Supplies,Baxter,ICU,Pharmacy,100,500
+SUP004,Bandages,750,2025-01-01,1.25,First Aid,Johnson & Johnson,Emergency,Supply Room,300,1500
+SUP005,Syringes,0,2024-03-01,0.25,Medical Supplies,BD Medical,Pharmacy,Clean Room,150,800
+SUP006,Surgical Masks,-100,2024-03-01,0.50,PPE,Medline,Surgery,OR Storage,400,2000 
