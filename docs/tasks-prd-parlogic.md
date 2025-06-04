@@ -23,66 +23,114 @@
 
 ## 📥 Task Group 2: CSV Ingestion & Validation
 
-- [ ] Design and implement `parse_csv()` method in `/backend/ingestion/parser.py`  
+- [x] Design and implement `parse_csv()` method in `/backend/ingestion/parser.py`  
   _Labels: backend, data | Est. Effort: 30m_
 
-- [ ] Add column validation and file error handling  
+- [x] Add column validation and file error handling  
   _Labels: backend, validation | Est. Effort: 20m_
 
-- [ ] Unit test `parse_csv()` with valid and invalid samples  
+- [x] Unit test `parse_csv()` with valid and invalid samples  
   _Labels: testing, backend | Est. Effort: 30m_
 
-- [ ] Create test CSV input samples and place in `/tests/data`  
+- [x] Create test CSV input samples and place in `/tests/data`  
   _Labels: testing | Est. Effort: 10m_
 
 ---
 
 ## 📊 Task Group 3: Data Analysis & Recommendations
 
-- [ ] Create analysis pipeline to calculate average monthly usage, max/min range  
+- [x] Create analysis pipeline to calculate average monthly usage, max/min range  
   _Labels: backend, analysis | Est. Effort: 45m_
 
-- [ ] Implement algorithm to suggest PAR levels and reorder points  
-  _Labels: backend, algorithm | Est. Effort: 45m_
+- [x] Implement seasonality detection for usage patterns  
+  _Labels: backend, analysis | Est. Effort: 30m_
 
-- [ ] Export results to CSV for user download  
-  _Labels: backend, export | Est. Effort: 20m_
+- [x] Add unit tests for analysis functions with sample data  
+  _Labels: testing, backend | Est. Effort: 30m_
 
----
-
-## 🌐 Task Group 4: Frontend UI & File Upload
-
-- [ ] Implement file upload form in React  
-  _Labels: frontend, ui | Est. Effort: 30m_
-
-- [ ] Display parsed results and analysis in dashboard  
-  _Labels: frontend, ui | Est. Effort: 60m_
-
-- [ ] Add tooltips or inline help for key metrics  
-  _Labels: frontend, ux | Est. Effort: 20m_
+- [x] Create test data with known seasonal patterns for validation  
+  _Labels: testing | Est. Effort: 15m_
 
 ---
 
-## ☁️ Task Group 5: Cloud Integration & Persistence
+## 🎯 Task Group 4: PAR Level Optimization
 
-- [ ] Integrate Supabase for saving history and results  
-  _Labels: cloud, backend | Est. Effort: 45m_
+- [x] Design PAR level calculation algorithm considering:
+  - Historical usage patterns
+  - Seasonality factors
+  - Safety stock requirements
+  - Lead time variability
+  _Labels: backend, algorithm | Est. Effort: 60m_
 
-- [ ] Create queryable history UI in frontend  
-  _Labels: frontend, cloud | Est. Effort: 45m_
+- [x] Implement PAR level recommendations in `/backend/analysis/par_calc.py`  
+  _Labels: backend | Est. Effort: 45m_
+
+- [x] Add unit tests for PAR level calculations  
+  _Labels: testing, backend | Est. Effort: 30m_
 
 ---
 
-## 🔁 Task Group 6: QA, Documentation & Deployment
+## 🌐 Task Group 5: API Development
 
-- [ ] Write user guide in `/docs` with screenshots  
-  _Labels: docs | Est. Effort: 60m_
+- [ ] Design RESTful API endpoints for:
+  - Data ingestion
+  - Analysis requests
+  - PAR recommendations
+  _Labels: backend, api | Est. Effort: 30m_
 
-- [ ] Add CI/CD pipeline for backend and frontend  
-  _Labels: devops | Est. Effort: 60m_
+- [ ] Implement FastAPI routes and handlers  
+  _Labels: backend, api | Est. Effort: 45m_
 
-- [ ] Deploy backend to Render/Fly.io  
-  _Labels: deployment, backend | Est. Effort: 45m_
+- [ ] Add API documentation using Swagger/OpenAPI  
+  _Labels: docs, api | Est. Effort: 20m_
 
-- [ ] Deploy frontend to Netlify/Vercel  
-  _Labels: deployment, frontend | Est. Effort: 30m_
+- [ ] Write API integration tests  
+  _Labels: testing, api | Est. Effort: 30m_
+
+---
+
+## 🎨 Task Group 6: Frontend Development
+
+- [ ] Design and implement dashboard layout  
+  _Labels: frontend, ui | Est. Effort: 45m_
+
+- [ ] Create data upload and validation component  
+  _Labels: frontend | Est. Effort: 30m_
+
+- [ ] Build analysis results visualization using charts  
+  _Labels: frontend, viz | Est. Effort: 60m_
+
+- [ ] Add PAR level recommendation display  
+  _Labels: frontend | Est. Effort: 30m_
+
+---
+
+## 🧪 Task Group 7: Testing & Documentation
+
+- [ ] Write end-to-end tests  
+  _Labels: testing | Est. Effort: 45m_
+
+- [ ] Add comprehensive API documentation  
+  _Labels: docs | Est. Effort: 30m_
+
+- [ ] Create user guide with examples  
+  _Labels: docs | Est. Effort: 45m_
+
+- [ ] Document deployment process  
+  _Labels: docs, devops | Est. Effort: 30m_
+
+---
+
+## 🚀 Task Group 8: Deployment
+
+- [ ] Set up CI/CD pipeline  
+  _Labels: devops | Est. Effort: 45m_
+
+- [ ] Configure production environment  
+  _Labels: devops | Est. Effort: 30m_
+
+- [ ] Deploy application  
+  _Labels: devops | Est. Effort: 30m_
+
+- [ ] Monitor and verify deployment  
+  _Labels: devops | Est. Effort: 15m_
