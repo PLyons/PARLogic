@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "cypress-file-upload": "^5.0.8"
+  },
+  "dependencies": {
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
