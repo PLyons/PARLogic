@@ -8,7 +8,6 @@ import {
   Button,
   Alert,
   CircularProgress,
-  Slider,
   Grid as MuiGrid,
 } from '@mui/material';
 import {
@@ -22,8 +21,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { calculatePAR, getRecommendations } from '../../services/api';
-import type { PARLevels as PARLevelsType, StockRecommendation } from '../../services/api';
+import { calculatePAR, getRecommendations } from '../../services/api.ts';
+import type { PARLevels as PARLevelsType, StockRecommendation } from '../../services/api.ts';
 
 ChartJS.register(
   CategoryScale,
@@ -37,8 +36,6 @@ ChartJS.register(
 
 const PARLevels: React.FC = () => {
   const [itemId, setItemId] = useState('');
-  const [serviceLevel, setServiceLevel] = useState(0.95);
-  const [leadTimeDays, setLeadTimeDays] = useState(3);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [parLevels, setPARLevels] = useState<PARLevelsType | null>(null);
@@ -55,11 +52,11 @@ const PARLevels: React.FC = () => {
 
     try {
       const [parData, recsData] = await Promise.all([
-        calculatePAR(itemId, serviceLevel, leadTimeDays),
-        getRecommendations(itemId),
+        calculatePAR(itemId),
+        getRecommendations(),
       ]);
       setPARLevels(parData);
-      setRecommendations(recsData.recommendations);
+      setRecommendations(recsData);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to calculate PAR levels');
     } finally {
@@ -127,36 +124,13 @@ const PARLevels: React.FC = () => {
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <MuiGrid container spacing={3}>
-            <MuiGrid item xs={12} md={4}>
+            <MuiGrid item xs={12}>
               <TextField
                 fullWidth
                 label="Item ID"
                 value={itemId}
                 onChange={(e) => setItemId(e.target.value)}
                 variant="outlined"
-              />
-            </MuiGrid>
-            <MuiGrid item xs={12} md={4}>
-              <Typography gutterBottom>Service Level: {serviceLevel * 100}%</Typography>
-              <Slider
-                value={serviceLevel}
-                onChange={(_, value) => setServiceLevel(value as number)}
-                min={0.8}
-                max={0.99}
-                step={0.01}
-                valueLabelDisplay="auto"
-                valueLabelFormat={(value) => `${(value * 100).toFixed(0)}%`}
-              />
-            </MuiGrid>
-            <MuiGrid item xs={12} md={4}>
-              <Typography gutterBottom>Lead Time (Days): {leadTimeDays}</Typography>
-              <Slider
-                value={leadTimeDays}
-                onChange={(_, value) => setLeadTimeDays(value as number)}
-                min={1}
-                max={14}
-                step={1}
-                valueLabelDisplay="auto"
               />
             </MuiGrid>
             <MuiGrid item xs={12}>
@@ -248,25 +222,23 @@ const PARLevels: React.FC = () => {
               Recommendations
             </Typography>
             {recommendations.map((rec, index) => (
-              <Alert
-                key={index}
-                severity={
-                  rec.urgency === 'high'
-                    ? 'error'
-                    : rec.urgency === 'medium'
-                    ? 'warning'
-                    : 'info'
-                }
-                sx={{ mb: 2 }}
-              >
-                <Typography variant="subtitle1">
-                  {rec.recommended_action}
+              <Box key={index} sx={{ mb: 2 }}>
+                <Typography variant="subtitle1" color="primary">
+                  Item {rec.item_id}
                 </Typography>
-                <Typography variant="body2">
+                <Typography>
                   Current Stock: {rec.current_stock} units
                 </Typography>
-                <Typography variant="body2">{rec.details}</Typography>
-              </Alert>
+                <Typography>
+                  Recommended Order: {rec.recommended_order} units
+                </Typography>
+                <Typography>
+                  Urgency: {rec.urgency}
+                </Typography>
+                <Typography>
+                  Next Review: {rec.next_review_date}
+                </Typography>
+              </Box>
             ))}
           </CardContent>
         </Card>

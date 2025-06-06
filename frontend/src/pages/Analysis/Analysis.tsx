@@ -24,8 +24,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { analyzeUsage } from '../../services/api';
-import type { UsagePattern } from '../../services/api';
+import { analyzeUsage } from '../../services/api.ts';
+import type { UsagePattern } from '../../services/api.ts';
 
 ChartJS.register(
   CategoryScale,

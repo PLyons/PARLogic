@@ -13,17 +13,22 @@ import {
   ListItemText,
 } from '@mui/material';
 import {
-  CloudUpload as UploadIcon,
+  CloudUpload as CloudUploadIcon,
   CheckCircle as CheckIcon,
   Error as ErrorIcon,
 } from '@mui/icons-material';
 import { useDropzone } from 'react-dropzone';
-import { uploadFile } from '../../services/api';
+import { uploadFile, UploadResponse } from '../../services/api.ts';
 
 interface FileStatus {
   name: string;
   status: 'pending' | 'success' | 'error';
   message?: string;
+  details?: {
+    rows?: number;
+    items?: number;
+    dateRange?: string;
+  };
 }
 
 const UploadData: React.FC = () => {
@@ -49,9 +54,15 @@ const UploadData: React.FC = () => {
         newFiles.push({
           name: file.name,
           status: 'success',
-          message: `${response.message} (${response.rows} rows processed)`,
+          message: response.message,
+          details: {
+            rows: response.rows,
+            items: response.items,
+            dateRange: response.date_range,
+          },
         });
       } catch (error) {
+        console.error('Upload error:', error);
         newFiles.push({
           name: file.name,
           status: 'error',
@@ -107,7 +118,7 @@ const UploadData: React.FC = () => {
             gap: 2,
           }}
         >
-          <UploadIcon color="primary" sx={{ fontSize: 48 }} />
+          <CloudUploadIcon color="primary" sx={{ fontSize: 48 }} />
           <Typography variant="h6" align="center">
             {isDragActive
               ? 'Drop the files here'
@@ -118,7 +129,7 @@ const UploadData: React.FC = () => {
           </Typography>
           <Button
             variant="contained"
-            startIcon={<UploadIcon />}
+            startIcon={<CloudUploadIcon />}
             onClick={(e) => e.stopPropagation()}
           >
             Select Files
@@ -150,7 +161,25 @@ const UploadData: React.FC = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary={file.name}
-                    secondary={file.message}
+                    secondary={
+                      <>
+                        <Typography component="span" display="block">
+                          {file.message}
+                        </Typography>
+                        {file.details && (
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="text.secondary"
+                            display="block"
+                          >
+                            {file.details.rows} rows processed for {file.details.items} items
+                            <br />
+                            Date range: {file.details.dateRange}
+                          </Typography>
+                        )}
+                      </>
+                    }
                     primaryTypographyProps={{
                       color: file.status === 'error' ? 'error' : 'inherit',
                     }}

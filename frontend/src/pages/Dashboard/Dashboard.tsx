@@ -5,7 +5,6 @@ import {
   CardContent,
   Grid as MuiGrid,
   Typography,
-  useTheme,
 } from '@mui/material';
 import {
   TrendingUp as TrendingUpIcon,
@@ -42,8 +41,6 @@ const summaryCards = [
 ];
 
 const Dashboard: React.FC = () => {
-  const theme = useTheme();
-
   return (
     <Box>
       <Typography variant="h4" gutterBottom>

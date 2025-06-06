@@ -1,18 +1,16 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000';
-const API_KEY = 'test-key'; // In production, this should be loaded from environment variables
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'X-API-Key': API_KEY,
-  },
 });
 
 export interface UploadResponse {
   message: string;
   rows: number;
+  items: number;
+  date_range: string;
 }
 
 export interface UsagePattern {
@@ -30,16 +28,14 @@ export interface PARLevels {
   max_par: number;
   reorder_point: number;
   safety_stock: number;
-  service_level: number;
-  lead_time_days: number;
 }
 
 export interface StockRecommendation {
   item_id: string;
   current_stock: number;
-  recommended_action: string;
-  urgency: string;
-  details: string;
+  recommended_order: number;
+  urgency: 'low' | 'medium' | 'high';
+  next_review_date: string;
 }
 
 export interface RecommendationResponse {
@@ -50,12 +46,20 @@ export interface RecommendationResponse {
 export const uploadFile = async (file: File): Promise<UploadResponse> => {
   const formData = new FormData();
   formData.append('file', file);
-  const response = await api.post<UploadResponse>('/upload/', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-  return response.data;
+
+  try {
+    const response = await api.post('/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.detail || 'Error uploading file');
+    }
+    throw error;
+  }
 };
 
 export const analyzeUsage = async (
@@ -63,40 +67,45 @@ export const analyzeUsage = async (
   endDate: string,
   itemId?: string
 ): Promise<UsagePattern> => {
-  const response = await api.get<UsagePattern>('/analyze/usage/', {
-    params: {
-      start_date: startDate,
-      end_date: endDate,
-      item_id: itemId,
-    },
-  });
-  return response.data;
+  try {
+    const response = await api.get('/analyze/usage/', {
+      params: {
+        start_date: startDate,
+        end_date: endDate,
+        item_id: itemId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.detail || 'Error analyzing usage');
+    }
+    throw error;
+  }
 };
 
-export const calculatePAR = async (
-  itemId: string,
-  serviceLevel: number = 0.95,
-  leadTimeDays: number
-): Promise<PARLevels> => {
-  const response = await api.get<PARLevels>('/calculate/par/', {
-    params: {
-      item_id: itemId,
-      service_level: serviceLevel,
-      lead_time_days: leadTimeDays,
-    },
-  });
-  return response.data;
+export const calculatePAR = async (itemId: string): Promise<PARLevels> => {
+  try {
+    const response = await api.get(`/par/${itemId}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.detail || 'Error calculating PAR levels');
+    }
+    throw error;
+  }
 };
 
-export const getRecommendations = async (
-  itemId?: string
-): Promise<RecommendationResponse> => {
-  const response = await api.get<RecommendationResponse>('/recommendations/', {
-    params: {
-      item_id: itemId,
-    },
-  });
-  return response.data;
+export const getRecommendations = async (): Promise<StockRecommendation[]> => {
+  try {
+    const response = await api.get('/recommendations');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.detail || 'Error getting recommendations');
+    }
+    throw error;
+  }
 };
 
 export default api; 

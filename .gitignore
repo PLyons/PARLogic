@@ -40,4 +40,14 @@ yarn-error.log*
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Data files
+data/uploads/*
+!data/uploads/.gitkeep
+*.csv
+!tests/data/*.csv
+
+# Test data
+tests/data/sample*.csv
+frontend/cypress/fixtures/sample*.csv 
